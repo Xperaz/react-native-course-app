@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-course-app",
-    "slug": "react-native-course-app",
+    "name": "plantly",
+    "slug": "plantly",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
