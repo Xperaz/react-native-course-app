@@ -1,0 +1,100 @@
+import React from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { theme } from "../theme";
+import AntDesign from "@expo/vector-icons/AntDesign";
+
+type ShoppingListItemProps = {
+  name: string;
+  isCompleted?: boolean;
+};
+
+export function ShoppingListItem({ name, isCompleted }: ShoppingListItemProps) {
+  const handleDeleteItem = () => {
+    Alert.alert(
+      "Are you sure you want to delete this?",
+      "It will be gone forever!",
+      [
+        {
+          text: "Confirm",
+          onPress: () => console.log("Ok, Deleting"),
+          style: "destructive",
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]
+    );
+  };
+
+  return (
+    <View
+      style={[
+        styles.itemContainer,
+        isCompleted ? styles.completedContainer : undefined,
+      ]}
+    >
+      <Text
+        style={[
+          styles.itemText,
+          isCompleted ? styles.completedButtonText : undefined,
+        ]}
+      >
+        {name}
+      </Text>
+      {isCompleted ? <Text>Completed</Text> : null}
+      <TouchableOpacity onPress={handleDeleteItem}>
+        <AntDesign
+          name="closecircle"
+          size={24}
+          color={isCompleted ? theme.colorGrey : theme.colorRed}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  itemContainer: {
+    borderBottomWidth: 1,
+    borderBlockColor: theme.colorCerulean,
+    paddingHorizontal: 8,
+    paddingVertical: 16,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  completedContainer: {
+    backgroundColor: theme.colorLightGrey,
+    borderBottomColor: theme.colorLightGrey,
+  },
+
+  itemText: {
+    fontSize: 18,
+    fontWeight: "200",
+  },
+
+  button: {
+    backgroundColor: theme.colorBlack,
+    padding: 8,
+    borderRadius: 6,
+  },
+
+  completedButton: {
+    backgroundColor: theme.colorGrey,
+  },
+
+  buttonText: {
+    color: theme.colorWhite,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    letterSpacing: 1,
+  },
+
+  completedButtonText: {
+    color: theme.colorBlack,
+    // add line through text decoration
+    textDecorationLine: "line-through",
+  },
+});
