@@ -1,14 +1,29 @@
 import React from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { theme } from "../theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from "@expo/vector-icons/Entypo";
 
 type ShoppingListItemProps = {
   name: string;
   isCompleted?: boolean;
+  onDelete: () => void;
+  onToggleComplete: () => void;
 };
 
-export function ShoppingListItem({ name, isCompleted }: ShoppingListItemProps) {
+export function ShoppingListItem({
+  name,
+  isCompleted,
+  onDelete,
+  onToggleComplete,
+}: ShoppingListItemProps) {
   const handleDeleteItem = () => {
     Alert.alert(
       "Are you sure you want to delete this?",
@@ -16,7 +31,7 @@ export function ShoppingListItem({ name, isCompleted }: ShoppingListItemProps) {
       [
         {
           text: "Confirm",
-          onPress: () => console.log("Ok, Deleting"),
+          onPress: onDelete,
           style: "destructive",
         },
         {
@@ -28,20 +43,30 @@ export function ShoppingListItem({ name, isCompleted }: ShoppingListItemProps) {
   };
 
   return (
-    <View
+    <Pressable
       style={[
         styles.itemContainer,
         isCompleted ? styles.completedContainer : undefined,
       ]}
+      onPress={() => onToggleComplete()}
     >
-      <Text
-        style={[
-          styles.itemText,
-          isCompleted ? styles.completedButtonText : undefined,
-        ]}
-      >
-        {name}
-      </Text>
+      <View style={styles.row}>
+        <Entypo
+          name={isCompleted ? "check" : "circle"}
+          size={24}
+          color="black"
+        />
+
+        <Text
+          numberOfLines={1}
+          style={[
+            styles.itemText,
+            isCompleted ? styles.completedButtonText : undefined,
+          ]}
+        >
+          {name}
+        </Text>
+      </View>
       {isCompleted ? <Text>Completed</Text> : null}
       <TouchableOpacity onPress={handleDeleteItem}>
         <AntDesign
@@ -50,7 +75,7 @@ export function ShoppingListItem({ name, isCompleted }: ShoppingListItemProps) {
           color={isCompleted ? theme.colorGrey : theme.colorRed}
         />
       </TouchableOpacity>
-    </View>
+    </Pressable>
   );
 }
 
@@ -73,6 +98,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 18,
     fontWeight: "200",
+    overflow: "scroll",
   },
 
   button: {
@@ -94,7 +120,10 @@ const styles = StyleSheet.create({
 
   completedButtonText: {
     color: theme.colorBlack,
-    // add line through text decoration
     textDecorationLine: "line-through",
+  },
+  row: {
+    flexDirection: "row",
+    gap: 6,
   },
 });
